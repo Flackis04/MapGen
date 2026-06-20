@@ -3,7 +3,10 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-run/
+run/**/entities/
+run/logs/
+run/*.log
+run/**/advancements/
 
 ### IntelliJ IDEA ###
 .idea
