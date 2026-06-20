@@ -1,0 +1,6 @@
+name: PluginTemplate
+version: 1.0.0
+main: com.example.template.TemplatePlugin
+api-version: '1.21'
+description: A Paper plugin template
+author: Bjorn
