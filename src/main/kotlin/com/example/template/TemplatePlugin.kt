@@ -28,26 +28,24 @@ class TemplatePlugin : JavaPlugin() {
                     if (z == Settings.ROW_BOX_COUNT - Settings.WALL_THICKNESS) Settings.IS_SOUTH_BORDER = true
                     else Settings.IS_SOUTH_BORDER = false
 
-                    val chance = 1.0 - (y.toDouble() / Settings.HEIGHT_BOX_COUNT).let { it * it}
-                    if (kotlin.random.Random.nextDouble() < chance && (y == 0 || (Settings.grid[x][y-1][z]))) {
-                        Settings.grid[x][y][z] = true
-                        HollowBox().makeHollowBox(
-                            origin.clone().add(
-                                (x * (Settings.BOX_SIZE - Settings.WALL_THICKNESS)).toDouble(),
-                                (y * (Settings.BOX_SIZE - Settings.WALL_THICKNESS)).toDouble() - 60,
-                                (z * (Settings.BOX_SIZE - Settings.WALL_THICKNESS)).toDouble()
-                            ),
-                            Settings.BOX_SIZE,
-                            Settings.BOX_SIZE,
-                            Settings.BOX_SIZE,
-                            Material.GRAY_CONCRETE,
-                            List(6) { kotlin.random.Random.nextInt(0, 3) },
-                            List(4) { kotlin.random.Random.nextInt(0, 3) }
-                        )
-                    }
-                    else Settings.grid[x][y][z] = false
+                    Settings.grid[x][y][z] = true
+                    HollowBox().makeHollowBox(
+                        origin.clone().add(
+                            (x * (Settings.BOX_SIZE - Settings.WALL_THICKNESS)).toDouble(),
+                            (y * (Settings.BOX_SIZE - Settings.WALL_THICKNESS)).toDouble() - 60,
+                            (z * (Settings.BOX_SIZE - Settings.WALL_THICKNESS)).toDouble()
+                        ),
+                        Settings.BOX_SIZE,
+                        Settings.BOX_SIZE,
+                        Settings.BOX_SIZE,
+                        Material.GRAY_CONCRETE,
+                        List(6) { kotlin.random.Random.nextInt(0, 3) },
+                        List(4) { kotlin.random.Random.nextInt(0, 3) }
+                    )
                 }
+                //else Settings.grid[x][y][z] = false
             }
         }
     }
 }
+
