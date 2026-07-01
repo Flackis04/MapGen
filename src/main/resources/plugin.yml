@@ -4,3 +4,7 @@ main: com.example.template.TemplatePlugin
 api-version: '1.21'
 description: A Paper plugin template
 author: Bjorn
+commands:
+  mapgen:
+    description: Generate the map in the named world
+    usage: /mapgen <worldname>

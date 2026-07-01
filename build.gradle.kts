@@ -25,6 +25,37 @@ dependencies {
 }
 
 tasks {
+    val runWorldNames = listOf("world", "world_nether", "world_the_end")
+
+    val resetRunWorld by registering {
+        group = "run paper"
+        description = "Restore the local run worlds from run/_world_reset_snapshot before starting the dev server."
+
+        doLast {
+            val runDir = layout.projectDirectory.dir("run").asFile
+            val snapshotDir = runDir.resolve("_world_reset_snapshot")
+
+            require(snapshotDir.isDirectory) {
+                "Missing reset snapshot at ${snapshotDir.absolutePath}"
+            }
+
+            runWorldNames.forEach { worldName ->
+                val source = snapshotDir.resolve(worldName)
+                val target = runDir.resolve(worldName)
+
+                require(source.isDirectory) {
+                    "Missing reset snapshot world at ${source.absolutePath}"
+                }
+
+                delete(target)
+                copy {
+                    from(source)
+                    into(target)
+                }
+            }
+        }
+    }
+
     build {
         dependsOn(shadowJar)
     }
@@ -91,6 +122,7 @@ tasks {
     runServer {
         dependsOn("resetRunServerWorld")
         minecraftVersion("1.21.11")
+        dependsOn(resetRunWorld)
     }
 
     test {
