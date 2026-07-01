@@ -11,6 +11,9 @@ plugins {
 group = "com.example"
 version = "1.0.0"
 
+val runServerWorldNames = listOf("world", "world_nether", "world_the_end")
+val runServerWorldSnapshot = layout.projectDirectory.dir("run/_world_reset_snapshot")
+
 repositories {
     mavenCentral()
     maven("https://repo.papermc.io/repository/maven-public/")
@@ -43,7 +46,50 @@ tasks {
         filteringCharset = Charsets.UTF_8.name()
     }
 
+    register("captureRunServerWorldSnapshot") {
+        group = "run paper"
+        description = "Captures the current run server worlds as the reset baseline."
+
+        doLast {
+            val snapshotDir = runServerWorldSnapshot.asFile
+            delete(snapshotDir)
+
+            runServerWorldNames.forEach { worldName ->
+                val worldDir = layout.projectDirectory.dir("run/$worldName").asFile
+                if (worldDir.exists()) {
+                    copy {
+                        from(worldDir)
+                        into(snapshotDir.resolve(worldName))
+                    }
+                }
+            }
+        }
+    }
+
+    register("resetRunServerWorld") {
+        group = "run paper"
+        description = "Restores the run server worlds from the captured baseline."
+
+        doLast {
+            val snapshotDir = runServerWorldSnapshot.asFile
+            if (!snapshotDir.exists()) {
+                throw GradleException(
+                    "Missing run server world snapshot. Run './gradlew captureRunServerWorldSnapshot' first."
+                )
+            }
+
+            runServerWorldNames.forEach { worldName ->
+                delete(layout.projectDirectory.dir("run/$worldName").asFile)
+                copy {
+                    from(snapshotDir.resolve(worldName))
+                    into(layout.projectDirectory.dir("run/$worldName"))
+                }
+            }
+        }
+    }
+
     runServer {
+        dependsOn("resetRunServerWorld")
         minecraftVersion("1.21.11")
     }
 

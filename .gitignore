@@ -7,6 +7,7 @@ run/**/entities/
 run/logs/
 run/*.log
 run/**/advancements/
+run/_world_reset_snapshot/
 
 ### IntelliJ IDEA ###
 .idea
