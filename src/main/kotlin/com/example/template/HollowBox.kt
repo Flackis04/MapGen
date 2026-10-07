@@ -17,24 +17,24 @@ class HollowBox {
         for (x in 0 until width) {
             for (y in 0 until height) {
                 for (z in 0 until depth) {
-                    val doorX = x in Settings.DOOR_MIN..Settings.DOOR_MAX
-                    val doorZ = z in Settings.DOOR_MIN..Settings.DOOR_MAX
-                    val doorY = y in Settings.DOOR_FLOOR_Y..Settings.DOOR_CEILING_Y
+                    val inDoorSpanX  = x in Settings.DOOR_MIN..Settings.DOOR_MAX
+                    val inDoorSpanZ  = z in Settings.DOOR_MIN..Settings.DOOR_MAX
+                    val inDoorHeight = y in Settings.DOOR_FLOOR_Y..Settings.DOOR_CEILING_Y
 
-                    val isDoor =
-                        (doorX && doorY && z == 0         && doorRolls[0] == 0 && !Settings.IS_NORTH_BORDER) ||
-                        (doorX && doorY && z == depth - 1 && doorRolls[1] == 0 && !Settings.IS_SOUTH_BORDER) ||
-                        (doorZ && doorY && x == 0         && doorRolls[2] == 0 && !Settings.IS_WEST_BORDER)  ||
-                        (doorZ && doorY && x == width - 1 && doorRolls[3] == 0 && !Settings.IS_EAST_BORDER)
+                    val isDoorVoxel =
+                        (inDoorSpanX && inDoorHeight && z == 0         && doorRolls[0] == 0 && !Settings.IS_NORTH_BORDER) ||
+                        (inDoorSpanX && inDoorHeight && z == depth - 1 && doorRolls[1] == 0 && !Settings.IS_SOUTH_BORDER) ||
+                        (inDoorSpanZ && inDoorHeight && x == 0         && doorRolls[2] == 0 && !Settings.IS_WEST_BORDER)  ||
+                        (inDoorSpanZ && inDoorHeight && x == width - 1 && doorRolls[3] == 0 && !Settings.IS_EAST_BORDER)
 
-                    val westFace  = x == 0          && (faceRolls[0] != 0 || Settings.IS_WEST_BORDER)
-                    val eastFace  = x == width - 1  && (faceRolls[1] != 0 || Settings.IS_EAST_BORDER)
-                    val floorFace = y == 0          && (faceRolls[2] != 0 || Settings.IS_BORDER_FLOOR)
-                    val ceilFace  = y == height - 1 &&  faceRolls[3] != 0
-                    val northFace = z == 0          && (faceRolls[4] != 0 || Settings.IS_NORTH_BORDER)
-                    val southFace = z == depth - 1  && (faceRolls[5] != 0 || Settings.IS_SOUTH_BORDER)
+                    val isSolidWestWall  = x == 0          && (faceRolls[0] != 0 || Settings.IS_WEST_BORDER)
+                    val isSolidEastWall  = x == width - 1  && (faceRolls[1] != 0 || Settings.IS_EAST_BORDER)
+                    val isSolidFloor     = y == 0          && (faceRolls[2] != 0 || Settings.IS_BORDER_FLOOR)
+                    val isSolidCeiling   = y == height - 1 &&  faceRolls[3] != 0
+                    val isSolidNorthWall = z == 0          && (faceRolls[4] != 0 || Settings.IS_NORTH_BORDER)
+                    val isSolidSouthWall = z == depth - 1  && (faceRolls[5] != 0 || Settings.IS_SOUTH_BORDER)
 
-                    if ((westFace || eastFace || floorFace || ceilFace || northFace || southFace) && !isDoor) {
+                    if ((isSolidWestWall || isSolidEastWall || isSolidFloor || isSolidCeiling || isSolidNorthWall || isSolidSouthWall) && !isDoorVoxel) {
                         origin.clone().add(x.toDouble(), y.toDouble(), z.toDouble()).block.type = material
                     }
                 }
