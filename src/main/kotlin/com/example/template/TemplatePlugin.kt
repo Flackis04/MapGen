@@ -18,14 +18,16 @@ class TemplatePlugin : JavaPlugin() {
 
                     if (y == 0) Settings.IS_BORDER_FLOOR = true
                     else Settings.IS_BORDER_FLOOR = false
+                    if (y == Settings.HEIGHT_BOX_COUNT - 1) Settings.IS_TOP_BORDER = true
+                    else Settings.IS_TOP_BORDER = false
 
                     if (x == 0) Settings.IS_WEST_BORDER = true
                     else Settings.IS_WEST_BORDER = false
-                    if (x == Settings.ROW_BOX_COUNT - Settings.WALL_THICKNESS) Settings.IS_EAST_BORDER = true
+                    if (x == Settings.ROW_BOX_COUNT - 1) Settings.IS_EAST_BORDER = true
                     else Settings.IS_EAST_BORDER = false
                     if (z == 0) Settings.IS_NORTH_BORDER = true
                     else Settings.IS_NORTH_BORDER = false
-                    if (z == Settings.ROW_BOX_COUNT - Settings.WALL_THICKNESS) Settings.IS_SOUTH_BORDER = true
+                    if (z == Settings.ROW_BOX_COUNT - 1) Settings.IS_SOUTH_BORDER = true
                     else Settings.IS_SOUTH_BORDER = false
 
                     Settings.grid[x][y][z] = true

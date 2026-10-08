@@ -14,6 +14,7 @@ object Settings {
     const val DOOR_CEILING_Y = 3
 
     var IS_BORDER_FLOOR = false
+    var IS_TOP_BORDER   = false
     var IS_SOUTH_BORDER = false
     var IS_NORTH_BORDER = false
     var IS_WEST_BORDER  = false
